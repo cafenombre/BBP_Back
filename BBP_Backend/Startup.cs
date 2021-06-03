@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BBP_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BBP_Backend
 {
@@ -26,12 +28,9 @@ namespace BBP_Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<TodoContext>(opt =>
+            opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BBP_Backend", Version = "v1" });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,12 +39,9 @@ namespace BBP_Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BBP_Backend v1"));
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
